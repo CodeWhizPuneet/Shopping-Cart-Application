@@ -27,6 +27,9 @@ import {
 } from "@mui/material";
 import { addToCart, clearCart, removeFromCart, updateQuantity } from "./store/cartSlice";
 
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/$/, "");
+const PRODUCTS_ENDPOINT = `${API_BASE_URL}/api/products`;
+
 const formatINR = (amount) => new Intl.NumberFormat("en-IN", {
   style: "currency",
   currency: "INR",
@@ -52,7 +55,7 @@ function App() {
     const fetchProducts = async () => {
       try {
         setLoadingProducts(true);
-        const response = await axios.get("/api/products");
+        const response = await axios.get(PRODUCTS_ENDPOINT);
         setProducts(response.data);
         setProductError("");
       } catch {
@@ -87,7 +90,7 @@ function App() {
 
     try {
       setCreateLoading(true);
-      const response = await axios.post("/api/products", {
+      const response = await axios.post(PRODUCTS_ENDPOINT, {
         ...formData,
         price: Number(formData.price)
       });
